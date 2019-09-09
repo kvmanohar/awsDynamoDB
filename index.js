@@ -9,7 +9,7 @@ AWS.config.getCredentials((err) => {
 	}
 });
 
-const tableName = "jiradatra";
+const tableName = "jiradata";
 
 writeToDynamoDB = (tableName, jsonObj) => {
 	/**
@@ -96,7 +96,7 @@ const jsonObj = {
 		}
 	]
 };
-const updateParams = {
+const updateParams1 = {
 	TableName: tableName,
 	Key: dbKey,
 	UpdateExpression: "SET #cf = list_append(#cf, :t)",
@@ -114,7 +114,20 @@ const updateParams = {
 	}
 }; //Parameter to update one extra field item to the custome field list.
 
+const updateParams2 = {
+	TableName: tableName,
+	Key: dbKey,
+	UpdateExpression: "SET #nf = :t",
+	ExpressionAttributeNames: { "#nf": "NewField" },
+	ExpressionAttributeValues: {
+		":t": {
+			NewItmFld1: "Test Fld 1",
+			NewItmFld2: "Test Fld 2"
+		}
+	}
+}; //Update parameter to add new attribute to the item in the table. Here NewField is a new attribute to the field.
+
 // deleteFromDynamoDB(tableName, dbKey);
 // writeToDynamoDB(tableName, jsonObj);
-// updateDynamoDB(updateParams);
+// updateDynamoDB(updateParams2);
 readFromDynamoDB(tableName, dbKey);
